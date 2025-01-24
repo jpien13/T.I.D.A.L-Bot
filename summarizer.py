@@ -1,12 +1,10 @@
-import openai
+from openai import OpenAI
 import os
 from user_preferences import preferences
 from article_scraper import scrape_articles
 
-# Access sensitive data from environment variables
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
-
-openai.api_key = OPENAI_API_KEY
+# Initialize the OpenAI client
+client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 def estimate_tokens(text):
     """Estimates the number of tokens in a text."""
@@ -14,6 +12,9 @@ def estimate_tokens(text):
     return len(text) / AVG_CHARS_PER_TOKEN
 
 def summarize_articles(articles_content):
+    """
+    Summarize a list of articles using OpenAI's API
+    """
     summaries = []
     for article in articles_content:
         # Estimate the number of tokens in the article
@@ -26,31 +27,43 @@ def summarize_articles(articles_content):
         completion_tokens = min(preferences['summary_length'] * 5, available_tokens_for_completion)
 
         try:
-            response = openai.Completions.create(
-                model="gpt-3.5-turbo-instruct",
-                prompt=f"Summarize this event in {preferences['summary_length']} words:\n\n{article} emphasizing key points.",
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a precise and concise article summarizer."},
+                    {"role": "user", "content": f"Summarize this event in {preferences['summary_length']} words, emphasizing key points:\n\n{article}"}
+                ],
                 temperature=0.5,
-                max_tokens=completion_tokens,
+                max_tokens=int(completion_tokens),  # Ensure this is an integer
                 top_p=1,
                 frequency_penalty=0,
                 presence_penalty=0
             )
-            summaries.append(response.choices[0].text.strip())
-        except openai.error.APIConnectionError as e:
-            print(f"OpenAI API connection error: {e}")
-            summaries.append("Error summarizing article: could not process due to connection.")
-        except openai.error.InvalidRequestError as e:
-            print(f"Invalid request to OpenAI API: {e}")
-            summaries.append("Error summarizing article: request parameters invalid.")
-        except openai.error.OpenAIError as e:
-            print(f"OpenAI API error: {e}")
-            summaries.append("Error summarizing article: could not process.")
+            summaries.append(response.choices[0].message.content.strip())
+            print(f"✓ Successfully summarized article ({len(article)} chars -> {len(summaries[-1])} chars)")
+            
+        except Exception as e:
+            error_message = f"Error summarizing article: {str(e)}"
+            print(f"✗ {error_message}")
+            summaries.append(error_message)
+
     return summaries
 
 if __name__ == "__main__":
-
-    urls = ["https://www.theverge.com/2024/3/28/24112507/sam-bankman-fried-sentence-ftx-alameda", "https://arstechnica.com/gadgets/2024/03/netflix-ad-spend-led-to-facebook-dm-access-end-of-facebook-streaming-biz-lawsuit/?utm_source=tldrnewsletter"]
+    urls = [
+        "https://www.theverge.com/2024/3/28/24112507/sam-bankman-fried-sentence-ftx-alameda",
+        "https://arstechnica.com/gadgets/2024/03/netflix-ad-spend-led-to-facebook-dm-access-end-of-facebook-streaming-biz-lawsuit/"
+    ]
+    
+    print("Scraping articles...")
     articles_content = scrape_articles(urls)
+    
+    print("\nGenerating summaries...")
     summaries = summarize_articles(articles_content)
+    
+    print("\nSummaries:")
+    print("="*50)
     for i, summary in enumerate(summaries, 1):
-        print(f"Summary {i}:", summary, "\n")
+        print(f"\nSummary {i}:")
+        print(summary)
+        print("-"*50)
