@@ -5,6 +5,8 @@ import email
 import logging
 import datetime
 import os
+from datetime import datetime, timezone, timedelta
+import pytz
 
 # Setup basic logging with more detail
 logging.basicConfig(
@@ -50,22 +52,31 @@ def connect_to_email_server():
 def search_for_unread_emails(mail, sender_email):
     """Searches for unread emails from a specific sender, received on the current date."""
     try:
-        today_date = datetime.datetime.today().strftime('%d-%b-%Y')
-        # Combine FROM, SINCE, and ON criteria to get today's emails from the sender
-        search_criteria = f'(FROM "{sender_email}" SINCE "{today_date}")'
+        # Get the local timezone
+        local_tz = pytz.timezone('America/New_York')  # Assuming you're in EST/EDT
         
-        logging.info(f"Searching for emails from {sender_email} on {today_date}")
+        # Get today's date in your local timezone
+        local_today = datetime.now(local_tz)
+        search_date = local_today.strftime('%d-%b-%Y')
+        
+        # Add UNSEEN flag to search criteria
+        search_criteria = f'(FROM "{sender_email}" SINCE "{search_date}" UNSEEN)'
+        
+        logging.info(f"Local timezone: {local_tz}")
+        logging.info(f"Local time: {local_today}")
+        logging.info(f"Searching for emails from {sender_email} on {search_date}")
         logging.info(f"Using search criteria: {search_criteria}")
         
         status, email_ids = mail.search(None, search_criteria)
         
         if status != 'OK':
-            logging.error("No emails found.")
+            logging.error(f"Search failed with status: {status}")
             return []
             
         email_ids = email_ids[0].split()
         logging.info(f"Found {len(email_ids)} matching emails from today")
         return email_ids
+        
     except Exception as e:
         logging.error(f"Error searching for emails: {e}")
         raise
