@@ -18,7 +18,7 @@ def estimate_tokens(text):
     AVG_CHARS_PER_TOKEN = 4  # Rough approximation for GPT-like models
     return len(text) / AVG_CHARS_PER_TOKEN
 
-def trim_articles_to_token_limit(articles, token_limit=4097):
+def trim_articles_to_token_limit(articles, token_limit=8192):
     """Trims a list of articles to stay under a specified token limit."""
     total_tokens = sum(estimate_tokens(article) for article in articles)
     

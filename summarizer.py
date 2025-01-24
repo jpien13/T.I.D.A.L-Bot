@@ -21,7 +21,7 @@ def summarize_articles(articles_content):
         article_tokens = estimate_tokens(article)
 
         # Set a safe minimum for available tokens
-        available_tokens_for_completion = max(0, 4097 - article_tokens)
+        available_tokens_for_completion = max(0, 8192 - article_tokens)
 
         # Ensure we calculate `completion_tokens` correctly
         completion_tokens = min(preferences['summary_length'] * 5, available_tokens_for_completion)
