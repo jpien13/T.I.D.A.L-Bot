@@ -5,7 +5,24 @@ import email
 import logging
 import datetime
 import os
-from config import EMAIL_ADDRESS, EMAIL_PASSWORD  # Import from config.py
+
+# Setup basic logging with more detail
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
+# Configuration
+IMAP_SERVER = 'imap.gmail.com'
+EMAIL_FOLDER = 'INBOX'
+
+# Get credentials from environment variables
+EMAIL_ADDRESS = os.getenv('EMAIL_ADDRESS')
+EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
+
+if not EMAIL_ADDRESS or not EMAIL_PASSWORD:
+    logging.error("Email credentials not found in environment variables!")
+    raise ValueError("EMAIL_ADDRESS and EMAIL_PASSWORD must be set in environment variables")
 
 # Setup basic logging with more detail
 logging.basicConfig(
