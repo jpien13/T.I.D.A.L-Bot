@@ -28,7 +28,7 @@ def summarize_articles(articles_content):
 
         try:
             response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4-turbo",
                 messages=[
                     {"role": "system", "content": "You are a precise and concise article summarizer."},
                     {"role": "user", "content": f"Your audience is students in a college fintech club. Summarize this event in {preferences['summary_length']} words, emphasizing key points:\n\n{article}"}
