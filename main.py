@@ -53,7 +53,7 @@ def summarize_and_notify():
     print(f"Article Links: {article_links}")
     articles_content = scrape_articles(article_links)
     print(f"Articles Content: {articles_content}")
-    trimmed_articles = trim_articles_to_token_limit(articles_content, 4097)
+    trimmed_articles = trim_articles_to_token_limit(articles_content, 32768)
     print(f"Trimmed Articles: {trimmed_articles}")
     summaries = summarize_articles(trimmed_articles)
     print("TEST SUMMARIES LENGTH:" + str(len(summaries)))
