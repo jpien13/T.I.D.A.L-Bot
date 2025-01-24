@@ -58,7 +58,7 @@ def summarize_and_notify():
     summaries = summarize_articles(trimmed_articles)
     print("TEST SUMMARIES LENGTH:" + str(len(summaries)))
     if len(summaries) > 0:
-        send_slack_message("Hey! It's T.I.D.A.L giving you your daily updates! (Loading Content...)", SLACK_BOT_OAUTH, "#test")
+        send_slack_message("Hey! It's T.I.D.A.L giving you your daily updates! (Loading Content...) ***From Head of Tech: This chatbot is not perfect and like any LLM, can make mistakes***", SLACK_BOT_OAUTH, "#test")
     else:
         send_slack_message("Whoops! I've got nothing for you right now. Either I was unable to extract any content today or this was a hiccup! Sorry ", SLACK_BOT_OAUTH, "#test")
 
