@@ -49,6 +49,8 @@ def summarize_and_notify():
    #article_links = get_article_links('dan@tldrnewsletter.com')
     # Alternatively use another email, as needed
     article_links = get_article_links('pien.jason@gmail.com')
+    article_links.append('https://thefintechtimes.com/what-are-the-biggest-challenges-fintechs-need-to-overcome-to-ensure-meaningful-social-impact/')
+
     print(f"Article Links: {article_links}")
     articles_content = scrape_articles(article_links)
     print(f"Articles Content: {articles_content}")
