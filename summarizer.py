@@ -31,7 +31,7 @@ def summarize_articles(articles_content):
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are a precise and concise article summarizer."},
-                    {"role": "user", "content": f"Summarize this event in {preferences['summary_length']} words, emphasizing key points:\n\n{article}"}
+                    {"role": "user", "content": f"Your audience is students in a college fintech club. Summarize this event in {preferences['summary_length']} words, emphasizing key points:\n\n{article}"}
                 ],
                 temperature=0.5,
                 max_tokens=int(completion_tokens),  # Ensure this is an integer

@@ -49,7 +49,7 @@ def summarize_and_notify():
    #article_links = get_article_links('dan@tldrnewsletter.com')
     # Alternatively use another email, as needed
     article_links = get_article_links('pien.jason@gmail.com')
-    article_links.append('https://www.theregister.com/2024/03/25/ai_boom_nuclear/')
+    article_links.append('https://www.forbes.com/sites/stephenpastis/2025/01/21/fintech-payments-startup-highnote-hits-750-million-plus-valuation/')
 
     print(f"Article Links: {article_links}")
     articles_content = scrape_articles(article_links)
