@@ -163,11 +163,14 @@ class ArticleScraper:
 
     def scrape(self) -> List[str]:
         """
-        Main scraping method with improved rate limiting.
+        Main scraping method with improved rate limiting and status reporting.
         """
         articles_content = []
+        successful_urls = []
+        failed_urls = []
+        
         for url in self.urls:
-            print(f"Processing {url}")
+            print(f"\nProcessing {url}")
             
             # Add jitter to delay to appear more human-like
             delay = 1 + random.uniform(0.5, 2.0)
@@ -178,6 +181,26 @@ class ArticleScraper:
                 article_text = self.parse_content(html)
                 if article_text:
                     articles_content.append(article_text)
+                    successful_urls.append(url)
+                    print(f"✓ Successfully scraped article ({len(article_text)} characters)")
+                else:
+                    failed_urls.append(url)
+                    print("✗ Failed to extract content from page")
+            else:
+                failed_urls.append(url)
+                print("✗ Failed to fetch page")
+        
+        # Print summary
+        print("\n" + "="*50)
+        print(f"Scraping Summary:")
+        print(f"Total URLs attempted: {len(self.urls)}")
+        print(f"Successfully scraped: {len(successful_urls)}")
+        print(f"Failed to scrape: {len(failed_urls)}")
+        if failed_urls:
+            print("\nFailed URLs:")
+            for url in failed_urls:
+                print(f"- {url}")
+        print("="*50 + "\n")
         
         return articles_content
 
