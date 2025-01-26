@@ -28,7 +28,7 @@ def summarize_articles(articles_content):
 
         try:
             response = client.chat.completions.create(
-                model="gpt-4-turbo",
+                model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are a precise and concise article summarizer."},
                     {"role": "user", "content": f"Summarize this event in {preferences['summary_length']} words, emphasizing key points:\n\n{article} . Do not include any links or references to external sources. Do not say anything that is not in the article. Generate your summary using only information that can be attributed to the article. Do not ask follow up questions."}
