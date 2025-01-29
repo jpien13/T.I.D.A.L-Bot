@@ -47,7 +47,7 @@ class ArticleScraper:
         
         # Heuristic: Look for blocks of text within certain tags, giving priority to more common content tags
         content_tags = ['article', 'main', 'div', 'section']
-        likely_classes_patterns = ['content', 'post', 'text', 'article', 'body']
+        likely_classes_patterns = ['content', 'articleContent', 'post', 'text', 'article', 'body', 'articleBody']
         content = ""
 
         for tag in content_tags:
