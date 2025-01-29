@@ -7,6 +7,9 @@ from sms_sender_slack import send_slack_message
 from email_processor import get_article_links
 from user_preferences import preferences
 
+# channel = "#fintech-general-body-slack"
+channel = "#test-bot"
+
 # Access sensitive data from environment variables
 USER_PHONE_NUMBER = os.getenv('USER_PHONE_NUMBER')
 TELEGRAM_CHATID = os.getenv('TELEGRAM_CHATID')
@@ -58,13 +61,13 @@ def summarize_and_notify():
     summaries = summarize_articles(trimmed_articles)
     print("TEST SUMMARIES LENGTH:" + str(len(summaries)))
     if len(summaries) > 0:
-        send_slack_message("Hey! It's T.I.D.A.L giving you your daily updates! (Loading Content...)" , SLACK_BOT_OAUTH, "#fintech-general-body-slack")
-        send_slack_message("*** From Head of Tech: This chatbot is not perfect and like any LLM, can make mistakes***", SLACK_BOT_OAUTH, "#fintech-general-body-slack")
+        send_slack_message("Hey! It's T.I.D.A.L giving you your daily updates! (Loading Content...)" , SLACK_BOT_OAUTH, channel)
+        send_slack_message("*** From Head of Tech: This chatbot is not perfect and like any LLM, can make mistakes***", SLACK_BOT_OAUTH, channel)
     else:
-        send_slack_message("I've got nothing for you today. Either today is a weekend, I was unable to scrape any content, or this was a hiccup!", SLACK_BOT_OAUTH, "#fintech-general-body-slack")
+        send_slack_message("I've got nothing for you today. Either today is a weekend, I was unable to scrape any content, or this was a hiccup!", SLACK_BOT_OAUTH, channel)
 
     for summary in summaries:
-        send_slack_message(summary, SLACK_BOT_OAUTH, "#fintech-general-body-slack")
+        send_slack_message(summary, SLACK_BOT_OAUTH, channel)
 
 if __name__ == "__main__":
     summarize_and_notify()
