@@ -76,13 +76,13 @@ def summarize_and_notify():
 
     print(f"Articles Content: {articles_content}")
 
-    trimmed_articles = trim_articles_to_token_limit(articles_content, 16385)
+    #trimmed_articles = trim_articles_to_token_limit(articles_content, 16385)
 
-    print(f"Trimmed Articles: {trimmed_articles}")
+    #print(f"Trimmed Articles: {trimmed_articles}")
 
     summaries = summarize_articles(trimmed_articles)
 
-    print("TEST SUMMARIES LENGTH:" + str(len(summaries)))
+    print("TEST SUMMARIES LENGTH:" + str(len(articles_content)))
 
     if len(summaries) > 0:
         send_slack_message("Hey! It's T.I.D.A.L giving you your daily updates! (Loading Content...)" , SLACK_BOT_OAUTH, channel)
