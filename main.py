@@ -5,7 +5,10 @@ from sms_sender import send_sms_via_email
 from sms_sender_telegram import send_telegram_message
 from sms_sender_slack import send_slack_message
 from email_processor import get_article_links
+from email_processor import search_for_unread_emails
+from email_processor import connect_to_email_server
 from user_preferences import preferences
+from process_Newsletter import fetch_email_body
 
 # channel = "#fintech-general-body-slack"
 channel = "#test-bot"
@@ -21,7 +24,7 @@ def estimate_tokens(text):
     AVG_CHARS_PER_TOKEN = 4  # Rough approximation for GPT-like models
     return len(text) / AVG_CHARS_PER_TOKEN
 
-def trim_articles_to_token_limit(articles, token_limit=8192):
+def trim_articles_to_token_limit(articles, token_limit=16385):
     """Trims a list of articles to stay under a specified token limit."""
     total_tokens = sum(estimate_tokens(article) for article in articles)
     
@@ -52,14 +55,35 @@ def summarize_and_notify():
     
     article_links = get_article_links('dan@tldrnewsletter.com')
 
-
     print(f"Article Links: {article_links}")
+
     articles_content = scrape_articles(article_links)
+
+    moneystuff_mail = connect_to_email_server()
+    moneystuff_email_id = search_for_unread_emails(moneystuff_mail, "noreply@news.bloomberg.com")
+
+    if email_ids:
+        email_id = moneystuff_email_id[0]
+        email_body = fetch_email_body(moneystuff_mail, email_id)
+        
+        if email_body:
+            logging.info("Successfully fetched the email body.")
+            articles_content.append(email_body)
+        else:
+            logging.error("Failed to fetch the email body.")
+    else:
+        logging.info("No unread emails found from Money Stuff today.")
+
     print(f"Articles Content: {articles_content}")
-    trimmed_articles = trim_articles_to_token_limit(articles_content, 4097)
+
+    trimmed_articles = trim_articles_to_token_limit(articles_content, 16385)
+
     print(f"Trimmed Articles: {trimmed_articles}")
+
     summaries = summarize_articles(trimmed_articles)
+
     print("TEST SUMMARIES LENGTH:" + str(len(summaries)))
+
     if len(summaries) > 0:
         send_slack_message("Hey! It's T.I.D.A.L giving you your daily updates! (Loading Content...)" , SLACK_BOT_OAUTH, channel)
         send_slack_message("*** From Head of Tech: This chatbot is not perfect and like any LLM, can make mistakes***", SLACK_BOT_OAUTH, channel)
