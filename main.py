@@ -80,7 +80,7 @@ def summarize_and_notify():
 
     #print(f"Trimmed Articles: {trimmed_articles}")
 
-    summaries = summarize_articles(trimmed_articles)
+    summaries = summarize_articles(articles_content)
 
     print("TEST SUMMARIES LENGTH:" + str(len(articles_content)))
 
