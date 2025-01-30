@@ -62,7 +62,7 @@ def summarize_and_notify():
     moneystuff_mail = connect_to_email_server()
     moneystuff_email_id = search_for_unread_emails(moneystuff_mail, "noreply@news.bloomberg.com")
 
-    if email_ids:
+    if moneystuff_email_id:
         email_id = moneystuff_email_id[0]
         email_body = fetch_email_body(moneystuff_mail, email_id)
         
