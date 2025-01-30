@@ -60,7 +60,7 @@ def summarize_and_notify():
     articles_content = scrape_articles(article_links)
 
     moneystuff_mail = connect_to_email_server()
-    moneystuff_email_id = search_for_unread_emails(moneystuff_mail, "noreply@news.bloomberg.com")
+    moneystuff_email_id = search_for_unread_emails(moneystuff_mail, "dan@axios.com")
 
     if moneystuff_email_id:
         email_id = moneystuff_email_id[0]
