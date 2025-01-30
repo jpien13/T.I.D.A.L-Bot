@@ -10,8 +10,8 @@ from email_processor import connect_to_email_server
 from user_preferences import preferences
 from process_Newsletter import fetch_email_body
 
-#channel = "#fintech-general-body-slack"
-channel = "#test-bot"
+channel = "#fintech-general-body-slack"
+#channel = "#test-bot"
 
 # Access sensitive data from environment variables
 USER_PHONE_NUMBER = os.getenv('USER_PHONE_NUMBER')
@@ -60,7 +60,7 @@ def summarize_and_notify():
     articles_content = scrape_articles(article_links)
 
     moneystuff_mail = connect_to_email_server()
-    moneystuff_email_id = search_for_unread_emails(moneystuff_mail, "jason_pien@brown.edu")
+    moneystuff_email_id = search_for_unread_emails(moneystuff_mail, "noreply@news.bloomberg.com")
 
     if moneystuff_email_id:
         email_id = moneystuff_email_id[0]
