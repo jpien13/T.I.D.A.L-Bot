@@ -70,7 +70,7 @@ def summarize_and_notify():
             print("Successfully fetched the email body.")
             articles_content.append(email_body)
         else:
-            print()"Failed to fetch the email body.")
+            print("Failed to fetch the email body.")
     else:
         print("No unread emails found from Money Stuff today.")
 
