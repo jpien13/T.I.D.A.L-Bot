@@ -10,8 +10,8 @@ from email_processor import connect_to_email_server
 from user_preferences import preferences
 from process_Newsletter import fetch_email_body
 
-channel = "#fintech-general-body-slack"
-# channel = "#test-bot"
+#channel = "#fintech-general-body-slack"
+channel = "#test-bot"
 
 # Access sensitive data from environment variables
 USER_PHONE_NUMBER = os.getenv('USER_PHONE_NUMBER')
