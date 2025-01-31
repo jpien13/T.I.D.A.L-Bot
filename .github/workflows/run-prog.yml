@@ -1,37 +1,37 @@
-name: Run Daily Tech Brief Bot
+# name: Run Daily Tech Brief Bot
 
-on:
-  schedule:
-    - cron: '0 20 * * *'  # Runs every day at 11 AM EST (16:00 UTC)
-  workflow_dispatch:  # Allows manual trigger from the GitHub Actions tab
+# on:
+#   schedule:
+#     - cron: '0 20 * * *'  # Runs every day at 3 PM EST (20:00 UTC)
+#   workflow_dispatch:  # Allows manual trigger from the GitHub Actions tab
 
-jobs:
-  run-tech-brief:
-    runs-on: ubuntu-latest
+# jobs:
+#   run-tech-brief:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.12'
+#       - name: Set up Python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: '3.12'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+#       - name: Install dependencies
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install -r requirements.txt
 
-      - name: Run the script
-        env:
-          SLACK_BOT_OAUTH: ${{ secrets.SLACK_BOT_OAUTH }}
-          #TELEGRAM_BOT_API: ${{ secrets.TELEGRAM_BOT_API }}
-          USER_PHONE_NUMBER: ${{ secrets.USER_PHONE_NUMBER }}
-          TELEGRAM_CHATID: ${{ secrets.TELEGRAM_CHATID }}
-          TELEGRAM_BOT_API: ${{ secrets.TELEGRAM_BOT_API }}
-          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD}}
-          OPENAI_API_KEY:  ${{secrets.OPENAI_API_KEY}}
-        run: |
-          python main.py
+#       - name: Run the script
+#         env:
+#           SLACK_BOT_OAUTH: ${{ secrets.SLACK_BOT_OAUTH }}
+#           #TELEGRAM_BOT_API: ${{ secrets.TELEGRAM_BOT_API }}
+#           USER_PHONE_NUMBER: ${{ secrets.USER_PHONE_NUMBER }}
+#           TELEGRAM_CHATID: ${{ secrets.TELEGRAM_CHATID }}
+#           TELEGRAM_BOT_API: ${{ secrets.TELEGRAM_BOT_API }}
+#           EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+#           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD}}
+#           OPENAI_API_KEY:  ${{secrets.OPENAI_API_KEY}}
+#         run: |
+#           python main.py
